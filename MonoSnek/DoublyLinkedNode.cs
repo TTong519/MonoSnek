@@ -17,6 +17,7 @@ namespace MonoSnek
         {
             Value = value;
             Next = next;
+            this.Owner = Owner;
             Previous = previous;
         }
     }

@@ -41,9 +41,13 @@ namespace MonoSnek
         }
         public void AddFirst(T value)
         {
-            head = new(value, this, head);
-            if (count == 1 || count == 0)
+            if (count == 0)
             {
+                head = new(value, this);
+            }
+            else
+            {
+                head = new(value, this, head);
                 head.Next.Previous = head;
             }
             count++;
@@ -58,6 +62,19 @@ namespace MonoSnek
             current.Previous.Next = current.Next;
             current.Next.Previous = current.Previous;
             count--;
+        }
+        public bool Contains(T value)
+        {
+            DoublyLinkedNode<T> current = head;
+            while (!current.Value.Equals(value))
+            {
+                current = current.Next;
+                if(current == null)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
         public void RemoveLast()
         {

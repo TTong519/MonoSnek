@@ -13,6 +13,9 @@ namespace MonoSnek
         Texture2D Body;
         Grid grid;
         Snake snake;
+        Apple apple;
+        int gametime = 0;
+        bool abool;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -26,8 +29,8 @@ namespace MonoSnek
             grid = new(50);
             graphics.PreferredBackBufferWidth = 500;
             graphics.PreferredBackBufferHeight = 500;
+            abool = true;
             graphics.ApplyChanges();
-            TargetElapsedTime = MaxElapsedTime = new TimeSpan(0, 0, 0, 0, 1000);
             base.Initialize();
         }
 
@@ -48,10 +51,18 @@ namespace MonoSnek
 
             // TODO: Add your update logic here
             snake.UpdateDir(Keyboard.GetState());
-            snake.Move();
-            
-            
+            if (gametime % 300 <= 20 && abool)
+            {
+                snake.Move();
+                abool = false; 
+            }
+            else if(gametime % 300 > 20)
+            {
+                abool = true;
+            }
             base.Update(gameTime);
+
+            gametime += ((int)gameTime.ElapsedGameTime.TotalMilliseconds);
         }
 
         protected override void Draw(GameTime gameTime)

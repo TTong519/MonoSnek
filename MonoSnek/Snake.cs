@@ -50,35 +50,58 @@ namespace MonoSnek
                     break;
             }
         }
+        public bool Add(Apple apple)
+        {
+            if(Body.Contains(apple.Location))
+            {
+                switch (Dir)
+                {
+                    case Direction.Up:
+                        Body.AddFirst(new(Body.head.Value.X, Body.head.Value.Y - 1));
+                        break;
+                    case Direction.Down:
+                        Body.AddFirst(new(Body.head.Value.X, Body.head.Value.Y + 1));
+                        break;
+                    case Direction.Left:
+                        Body.AddFirst(new(Body.head.Value.X - 1, Body.head.Value.Y));
+                        break;
+                    case Direction.Right:
+                        Body.AddFirst(new(Body.head.Value.X + 1, Body.head.Value.Y));
+                        break;
+                }
+                return true;
+            }
+            return false;
+        }
         public void UpdateDir(KeyboardState keyboardState)
         {
             if (keyboardState.GetPressedKeys().Length > 0)
                 ;
 
-            if(keyboardState.IsKeyDown(Keys.Up))
+            if(keyboardState.IsKeyDown(Keys.Up) && Dir != Direction.Down)
             {
                 Dir = Direction.Up;
             }
-            else if (keyboardState.IsKeyDown(Keys.Down))
+            else if (keyboardState.IsKeyDown(Keys.Down) && Dir != Direction.Up)
             {
                 Dir = Direction.Down;
             }
-            else if (keyboardState.IsKeyDown(Keys.Left))
+            else if (keyboardState.IsKeyDown(Keys.Left) && Dir != Direction.Right)
             {
                 Dir = Direction.Left;
             }
-            else if (keyboardState.IsKeyDown(Keys.Right))
+            else if (keyboardState.IsKeyDown(Keys.Right) && Dir != Direction.Left)
             {
                 Dir = Direction.Right;
             }
         }
         public void Draw( SpriteBatch spiteBatch)
         {
-            spiteBatch.Draw(head, grid.Squares[Body.head.Value.X, Body.head.Value.Y], Color.White);
+            spiteBatch.Draw(head, grid.Squares[Body.head.Value.Y, Body.head.Value.X], Color.White);
             DoublyLinkedNode<Point> current = Body.head.Next;
             for (int i = 1; i < Body.count; i++)
             {
-                spiteBatch.Draw(body, grid.Squares[current.Value.X, current.Value.Y], Color.White);
+                spiteBatch.Draw(body, grid.Squares[current.Value.Y, current.Value.X], Color.White);
                 current = current.Next;
             }
         }
