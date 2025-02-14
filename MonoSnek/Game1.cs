@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Threading;
 
 namespace MonoSnek
 {
@@ -40,7 +41,7 @@ namespace MonoSnek
             Head = Content.Load<Texture2D>("head");
             Body = Content.Load<Texture2D>("body");
             snake = new Snake(new(4), Head, Body, grid);
-            // TODO: use this.Content to load your game content here
+            apple = new Apple(new(3, 3), Content.Load<Texture2D>("apple"), grid);
         }
         
 
@@ -48,8 +49,6 @@ namespace MonoSnek
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            // TODO: Add your update logic here
             snake.UpdateDir(Keyboard.GetState());
             if (gametime % 300 <= 20 && abool)
             {
@@ -60,8 +59,16 @@ namespace MonoSnek
             {
                 abool = true;
             }
+            if(snake.Body.count >= 100)
+            {
+                throw new Exception("you won");
+            }
+            if(snake.Body.ContainsDuplicates())
+            {
+                throw new Exception("gaame over");
+            }
+            snake.Add(apple);
             base.Update(gameTime);
-
             gametime += ((int)gameTime.ElapsedGameTime.TotalMilliseconds);
         }
 
@@ -72,6 +79,7 @@ namespace MonoSnek
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             snake.Draw(spriteBatch);
+            apple.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }

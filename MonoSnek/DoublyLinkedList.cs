@@ -22,6 +22,24 @@ namespace MonoSnek
         {
             count = 0;
         }
+        public bool ContainsDuplicates()
+        {
+            DoublyLinkedNode<T> current = head;
+            List<T> list = new List<T>();
+            for (int i = 0; i < count; i++)
+            {
+                if(!list.Contains(current.Value))
+                {
+                    list.Add(current.Value);
+                    current = current.Next;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public void AddAfter(T value, int index)
         {
             if (index < count)

@@ -54,6 +54,7 @@ namespace MonoSnek
         {
             if(Body.Contains(apple.Location))
             {
+                apple.Regen();
                 switch (Dir)
                 {
                     case Direction.Up:
